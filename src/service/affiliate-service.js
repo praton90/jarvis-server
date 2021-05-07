@@ -1,6 +1,10 @@
 const moment = require("moment");
 
-const datasource = require("./datasource");
+const repository = require("../repository/affiliate-repository");
+const appointmentService = require("./appointment-service")
+
+const getAffiliates = () => repository.getAll()
+  .map(affiliate => { return { id: affiliate.id, name: affiliate.name } });
 
 const getDaysLeftInTheCurrentMonth = (daysAvailable) => {
   const endOfMonth = moment().clone().endOf('month');
@@ -35,13 +39,13 @@ const buildSlots = (affiliateId, date) => {
   return slots;
 }
 
-const getUnavailableSlots = (affiliateId, date) => datasource.appointments
-  .filter(appointment => appointment.affiliateId === parseInt(affiliateId)
-    && appointment.date === date)
-  .map(appointment => appointment.time);
+const getUnavailableSlots = (affiliateId, date) => {
+  const affiliateAppointments = appointmentService.getAffiliateAppointmentsByDate(affiliateId, date)
+  return affiliateAppointments.map(appointment => appointment.time);
+}
 
 const getAffiliateDayAvailability = (affiliateId, date) => {
-  const affiliate = datasource.affiliates.find(affiliate => affiliate.id === affiliateId)
+  const affiliate = repository.getAffiliate(affiliateId)
 
   const dateParts = date.split("-");
   const selectedDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]).getDay();
@@ -60,9 +64,9 @@ const getAffiliateDayAvailability = (affiliateId, date) => {
 
 }
 
-const getAffiliateAvailability = (affiliateId) => {
-  const affiliate = datasource.affiliates
-    .find(affiliate => affiliate.id === affiliateId);
+const getAffiliateAvailability = affiliateId => {
+  const affiliate = repository.getAffiliate(affiliateId)
+  const affiliates = repository.getAll()
 
   const daysAvailable = affiliate.availability
     .map(availability => availability.day);
@@ -77,6 +81,7 @@ const getAffiliateAvailability = (affiliateId) => {
 }
 
 module.exports = {
+  getAffiliates,
   getAffiliateAvailability,
   buildSlots
 }

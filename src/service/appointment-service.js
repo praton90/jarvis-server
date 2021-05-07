@@ -1,4 +1,4 @@
-const repository = require("./appointment-repository");
+const repository = require("../repository/appointment-repository");
 
 const getAppointments = (userId, affiliateId) => {
   if (userId != undefined) {
@@ -10,9 +10,12 @@ const getAppointments = (userId, affiliateId) => {
   }
 }
 
+const getAffiliateAppointmentsByDate = (affiliateId, date) => repository.getAffiliateAppointmentsByDate(affiliateId, date)
+
 const saveAppointment = appointment => repository.save(appointment)
 
 module.exports = {
   getAppointments,
-  saveAppointment
+  saveAppointment,
+  getAffiliateAppointmentsByDate
 }

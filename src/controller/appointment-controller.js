@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router();
 
-const service = require("./appointment-service");
+const service = require("../service/appointment-service");
 
 router.post("/",
   (req, res) => {
