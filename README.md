@@ -1,2 +1,2 @@
 # jarvis-server
-WIP - Appointment server. Exposes a REST API
+WIP - POC for an appointment server.
