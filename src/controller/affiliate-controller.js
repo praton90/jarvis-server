@@ -27,7 +27,7 @@ router.get("/:affiliateId/availability/:date/slots",
     const date = req.params.date;
     const response = service.buildSlots(affiliateId, date);
 
-    res.send(response);
+    res.json(response);
   }
 )
 

@@ -9,7 +9,7 @@ router.post("/",
     //TODO: Validate request body
     service.saveAppointment(req.body)
 
-    res.status(201).send("Created");
+    res.status(201).json({ result: "Created" });
   }
 )
 
@@ -28,23 +28,22 @@ router.get("/",
 
     let userAppointments = service.getAppointments(userId, affiliateId);
 
-    res.send({
+    res.json({
       appointments: userAppointments
     });
   }
 )
 
-router.put("/user/:userId/appointment/:appointmentId",
+router.put("/:appointmentId",
   (req, res) => {
-    const userId = req.params.userId;
     const appointmentId = req.params.appointmentId;
-    console.log(`Confirm appointment for user ${userId}`)
-    const appointment = datasource.appointments.find(appointment => appointment.id === appointmentId)
+    const appointment = service.getAppointment(appointmentId)
+    console.log(`Confirm appointment for user ${appointment.userId}`)
     appointment.status = "CONFIRMED"
-
-    res.send({
+    res.json({
       appointment
     });
+
   }
 )
 

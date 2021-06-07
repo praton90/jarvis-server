@@ -14,8 +14,11 @@ const getAffiliateAppointmentsByDate = (affiliateId, date) => repository.getAffi
 
 const saveAppointment = appointment => repository.save(appointment)
 
+const getAppointment = appointmentId => repository.getAppointment(appointmentId)
+
 module.exports = {
   getAppointments,
   saveAppointment,
-  getAffiliateAppointmentsByDate
+  getAffiliateAppointmentsByDate,
+  getAppointment
 }
